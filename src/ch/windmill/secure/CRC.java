@@ -1,4 +1,4 @@
-package org.windmill.secure;
+package ch.windmill.secure;
 
 /**
  * This class has methods to calculate the crc of raw binary data.

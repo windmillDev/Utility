@@ -1,4 +1,4 @@
-package org.windmill.swing;
+package ch.windmill.swing;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;

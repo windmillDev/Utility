@@ -1,8 +1,8 @@
-package org.windmill.main;
+package ch.windmill.main;
 
 import java.util.Scanner;
 
-import org.windmill.secure.CRC;
+import ch.windmill.secure.CRC;
 
 /**
  * This class is a CRC calculator. It calculates a checksum for the given binary data. The 

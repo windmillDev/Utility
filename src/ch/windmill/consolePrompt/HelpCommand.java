@@ -1,4 +1,4 @@
-package org.windmill.consolePrompt;
+package ch.windmill.consolePrompt;
 
 import java.util.ArrayList;
 

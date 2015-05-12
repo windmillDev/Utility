@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.windmill.consolePrompt;
+package ch.windmill.consolePrompt;
 
-import org.windmill.net.SimpleEchoServer;
+import ch.windmill.net.SimpleEchoServer;
 
 /**
  * @author Cyrill Jauner

@@ -1,9 +1,9 @@
-package org.windmill.consolePrompt;
+package ch.windmill.consolePrompt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.windmill.swing.ConsoleWindow;
+import ch.windmill.swing.ConsoleWindow;
 
 /**
  * This <code>ConsolePrompt</code> let you work with some commands.

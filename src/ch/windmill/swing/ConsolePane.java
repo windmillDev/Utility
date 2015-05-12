@@ -1,4 +1,4 @@
-package org.windmill.swing;
+package ch.windmill.swing;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

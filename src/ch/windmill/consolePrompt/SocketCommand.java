@@ -1,8 +1,8 @@
-package org.windmill.consolePrompt;
+package ch.windmill.consolePrompt;
 
 import java.util.Arrays;
 
-import org.windmill.net.SimpleCommunicator;
+import ch.windmill.net.SimpleCommunicator;
 
 /**
  * The <code>SocketCommand</code> can establish a tcp connection with a remote host.

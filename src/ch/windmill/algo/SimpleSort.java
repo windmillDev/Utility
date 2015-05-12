@@ -1,4 +1,4 @@
-package org.windmill.algo;
+package ch.windmill.algo;
 
 public abstract class SimpleSort {
 	private int[] list;

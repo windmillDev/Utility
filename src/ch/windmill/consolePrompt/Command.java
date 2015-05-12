@@ -1,6 +1,6 @@
-package org.windmill.consolePrompt;
+package ch.windmill.consolePrompt;
 
-import org.windmill.io.XMLFile;
+import ch.windmill.io.XMLFile;
 
 /**
  * This is the super <code>Command</code> class for every command of the console prompt

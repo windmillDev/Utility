@@ -1,4 +1,4 @@
-package org.windmill.net;
+package ch.windmill.net;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

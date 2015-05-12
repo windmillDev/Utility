@@ -1,4 +1,4 @@
-package org.windmill.swing;
+package ch.windmill.swing;
 
 import java.awt.Font;
 import java.io.PipedInputStream;
