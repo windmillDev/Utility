@@ -15,8 +15,7 @@ public class CRC {
 	 */
 	public CRC() {
 		this(DEFAULTCRC);
-	}
-	
+        }
 	
 	/**
 	 * Creates a new CRC object. The given polynomial CRC must be an correct CRC value

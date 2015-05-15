@@ -14,12 +14,14 @@ import ch.windmill.algo.Sort;
 public class SortTest {
     
     public static void main(String[] args) {
-        int[] list = new int[] {4,3,6,7,8,1,9,0,2,5};
+        int[] list = new int[] {5,2,4,0,2,7,4};
         Sort s = new Sort();
-        s.bubbleSort(list);
+        //s.quickSort(list, 0, (list.length -1));
+        //s.medianOfThree(list, 0, (list.length -1));
         
-        for(int i = 0; i < list.length; i++) {
+        /*for(int i = 0; i < list.length; i++) {
             System.out.print(list[i]+" ");
-        }
+        }*/
+        
     }
 }

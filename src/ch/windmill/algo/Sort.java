@@ -8,11 +8,29 @@ import java.util.Arrays;
  * @version 1.0.0
  */
 public class Sort {
+    public final static int QUICKSORT = 1;
+    public final static int MERGESORT = 2;
+    public final static int SELECTIONSORT = 3;
+    public final static int INSERTIONSORT = 4;
+    public final static int BUBBLESORT = 5;
+    
+    private int[] unsorted;
+    private int[] sorted;
+    
     /**
      * Creates Sort objects
      */
     public Sort() {
-        // do nothing
+        this(new int[] {});
+    }
+    
+    /**
+     * Creates Sort objects.
+     * @param unsorted An array of unsorted values.
+     */
+    public Sort(final int[] unsorted) {
+        this.unsorted = unsorted;
+        sorted = Arrays.copyOf(unsorted, unsorted.length);
     }
     
     /**
@@ -25,6 +43,74 @@ public class Sort {
         int tmp = a[first];
         a[first] = a[second];
         a[second] = tmp;
+    }
+    
+    /**
+     * Calculates the median item value of three items (left, right and center). 
+     * @param a The array of values.
+     * @param left The left item index.
+     * @param right The right item index.
+     */
+    private int medianOfThree(final int[] a, final int left, final int right) {
+        int center = (right + left) /2;
+        
+        if(a[left] > a[center]) {
+            exchange(a, left, center);
+        }
+        if(a[left] > a[right]) {
+            exchange(a, left, right);
+        }
+        if(a[center] > a[right]) {
+            exchange(a, right, center);
+        }
+        exchange(a, center, right);
+        return a[right];
+    }
+    
+    /**
+     * Get the reference to the unsorted array. This was the start value before sorting.
+     * @return The reference to the unsorted array.
+     */
+    public int[] getUnsorted() {
+        return unsorted;
+    }
+    
+    /**
+     * Get the reference to the sorted array.
+     * @return The reference to the sorted array.
+     */
+    public int[] getCopyOfSorted() {
+        return sorted;
+    }
+    
+    /**
+     * Set the reference to the unsorted array.
+     * @param unsorted The unsorted array.
+     */
+    public void setUnsorted(final int[] unsorted) {
+        this.unsorted = unsorted;
+    }
+    
+    /**
+     * Sort the objects array with the given sort algorithm.
+     * @param sortIndex The index of the sort algorithm.
+     * @throws NoSuchFieldException The index is not supported.
+     */
+    public void sort(final int sortIndex) throws NoSuchFieldException {
+        switch(sortIndex) {
+            case QUICKSORT:
+                quickSort(sorted, 0, sorted.length -1);
+            case MERGESORT:
+                mergeSort(sorted);
+            case SELECTIONSORT:
+                selectionSort(sorted);
+            case INSERTIONSORT:
+                insertionSort(sorted);
+            case BUBBLESORT:
+                bubbleSort(sorted);
+            default:
+                throw new NoSuchFieldException("The algorithm index was not found.");
+        }
     }
     
     /**
@@ -109,46 +195,46 @@ public class Sort {
     }
     
     /**
-     * Quicksort algorithm with right separation element.
+     * Quicksort algorithm whith a median pivot element.
      * @param a Array to sort.
      * @param left Left border, at beginning <code> 0 </code>
      * @param right right border, at beginning <code> a.lenght - 1</code>.
      */
     public void quickSort(final int[] a, final int left, final int right) {
-        int up = left;                  // linke Grenze
-        int down = right - 1;           // rechte Grenze (ohne Trennelement)
-        int t = a[right];               // rechtes Element als Trennelemt
+        int up = left;                  // left border
+        int down = right - 1;           // right border
+        int p = medianOfThree(a, left, right);   // the pivot element is the median of three values
         boolean allElementChecked = false;
 
         do {
-            while (a[up] < t) {
-                up++;                   // suchen groesseres Element von links an
+            while (a[up] < p) {
+                up++;                   // find the next element who is bigger
             }
-            while ((a[down] > t) && (down > up)) {
-                down--;                 // suchen kleineres Element von rechts an
+            while ((a[down] > p) && (down > up)) {
+                down--;                 // find the next element who is lower
             }
             if (up < down) {
-                exchange(a, up, down);  // austauschen
-                up++;                   // linke und rechte Grenze verschieben:
+                exchange(a, up, down);  // exchange
+                up++;                   // move left and right border
                 down--;
             } else {
                 allElementChecked = true;
             }
-        } while (!allElementChecked);   // Ueberschneidung
+        } while (!allElementChecked);   // overlap
 
-        exchange(a, up, right);         // Trennelement an endgueltige Position (a[up])
+        exchange(a, up, right);         // set the separator element to the right position
 
-        if (left < up - 1) {            // mehr als 1 Element in linker Teilfolge?
-            quickSort(a, left, up - 1); // linke Haelfte sortieren
+        if (left < up - 1) {            // check if there are more than 1 element in the left part
+            quickSort(a, left, up - 1); // sort the left part
         }
-        if (up + 1 < right) {           // mehr als 1 Element in rechter Teilfolge?
-            quickSort(a, up + 1, right); // rechte Haelfte sortieren (ohne Trennelement)
+        if (up + 1 < right) {           // check if there are more than 1 element in the right part
+            quickSort(a, up + 1, right); // sort the right part (without the separator)
         }
     }
     
     /**
-     * 
-     * @param a 
+     * Invokes an MergeSort algorithm.
+     * @param a An unsorted array.
      */
     public void mergeSort(final int[] a) {
         MergeSort ms = new MergeSort();
