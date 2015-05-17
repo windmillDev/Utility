@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ch.windmill.algo;
 
 /**
@@ -13,23 +8,24 @@ public class MergeSort {
     int[] b;
     
     public MergeSort() {
-        // do nothing
+        b = new int[0];
     }
     
     /**
-     * 
-     * @param a 
+     * Sort the array with a mergesort algorithm.
+     * @param a Array to sort.
      */
-    public void mergeSort(final int[] a) {
-        int[] b = new int[a.length];
+    public void sort(final int[] a) {
+        b = new int[a.length];
         mergeSort(a, 0, a.length -1);
     }
     
     /**
-     * 
-     * @param a
-     * @param left
-     * @param right 
+     * Mergesort algorithm. This method sort the given array with a recursive mergesort algorithm.
+     * This algorithm has a guaranteed complexity of O(n*log(n)) and is stable.
+     * @param a Array to sort.
+     * @param left left border, at beginning <code>0</code>.
+     * @param right right border, at beginning <code>a.length -1</code>.
      */
     private void mergeSort(final int[] a, final int left, final int right) {
         int m, i, j, k;
@@ -53,11 +49,11 @@ public class MergeSort {
             for(k = left; k <= right; k++) {    // copy sorted into array
                 if(b[i] <= b[j]) {
                     a[k] = b[i];
-                    System.out.println("copy "+b[i]+" to pos "+k);
+                    //System.out.println("copy "+b[i]+" to pos "+k);
                     i++;
                 } else {
                     a[k] = b[j];
-                    System.out.println("copy "+b[j]+" to pos "+k);
+                    //System.out.println("copy "+b[j]+" to pos "+k);
                     j--;
                 }
             }

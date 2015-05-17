@@ -1,37 +1,11 @@
 package ch.windmill.algo;
 
-import java.util.Arrays;
-
 /**
- * This is class has serveral sort algorithms.
+ * This class has serveral sort algorithms.
  * @author Cyrill Jauner
  * @version 1.0.0
  */
 public class Sort {
-    public final static int QUICKSORT = 1;
-    public final static int MERGESORT = 2;
-    public final static int SELECTIONSORT = 3;
-    public final static int INSERTIONSORT = 4;
-    public final static int BUBBLESORT = 5;
-    
-    private int[] unsorted;
-    private int[] sorted;
-    
-    /**
-     * Creates Sort objects
-     */
-    public Sort() {
-        this(new int[] {});
-    }
-    
-    /**
-     * Creates Sort objects.
-     * @param unsorted An array of unsorted values.
-     */
-    public Sort(final int[] unsorted) {
-        this.unsorted = unsorted;
-        sorted = Arrays.copyOf(unsorted, unsorted.length);
-    }
     
     /**
      * Exchange the element on the position first with the element on the position second.
@@ -39,7 +13,7 @@ public class Sort {
      * @param first The first index.
      * @param second The second index.
      */
-    private void exchange(final int[] a, final int first, final int second) {
+    private static void exchange(final int[] a, final int first, final int second) {
         int tmp = a[first];
         a[first] = a[second];
         a[second] = tmp;
@@ -51,7 +25,7 @@ public class Sort {
      * @param left The left item index.
      * @param right The right item index.
      */
-    private int medianOfThree(final int[] a, final int left, final int right) {
+    private static int medianOfThree(final int[] a, final int left, final int right) {
         int center = (right + left) /2;
         
         if(a[left] > a[center]) {
@@ -68,57 +42,11 @@ public class Sort {
     }
     
     /**
-     * Get the reference to the unsorted array. This was the start value before sorting.
-     * @return The reference to the unsorted array.
-     */
-    public int[] getUnsorted() {
-        return unsorted;
-    }
-    
-    /**
-     * Get the reference to the sorted array.
-     * @return The reference to the sorted array.
-     */
-    public int[] getCopyOfSorted() {
-        return sorted;
-    }
-    
-    /**
-     * Set the reference to the unsorted array.
-     * @param unsorted The unsorted array.
-     */
-    public void setUnsorted(final int[] unsorted) {
-        this.unsorted = unsorted;
-    }
-    
-    /**
-     * Sort the objects array with the given sort algorithm.
-     * @param sortIndex The index of the sort algorithm.
-     * @throws NoSuchFieldException The index is not supported.
-     */
-    public void sort(final int sortIndex) throws NoSuchFieldException {
-        switch(sortIndex) {
-            case QUICKSORT:
-                quickSort(sorted, 0, sorted.length -1);
-            case MERGESORT:
-                mergeSort(sorted);
-            case SELECTIONSORT:
-                selectionSort(sorted);
-            case INSERTIONSORT:
-                insertionSort(sorted);
-            case BUBBLESORT:
-                bubbleSort(sorted);
-            default:
-                throw new NoSuchFieldException("The algorithm index was not found.");
-        }
-    }
-    
-    /**
      * Cast the chars of the given String to an integer array
      * @param text	String to cast
      * @return	An integer array with the char values
      */
-    public int[] castStringToIntArray(final String text) {
+    public static int[] castStringToIntArray(final String text) {
         int[] intList = new int[text.length()];
         char[] charList = text.toCharArray();
 
@@ -131,10 +59,10 @@ public class Sort {
     
     /**
      * SelectionSort Check every position of the array, if it's lower than the next position. If it's true, change the position of the current
-     * value with the lower position.
+     * value with the lower position. This algorithm has a complexity of O(n^2) and is not stable.
      * @param a The unsorted list
      */
-    public void selectionSort(final int[] a) {
+    public static void selectionSort(final int[] a) {
         int tmp, min = 0;
         
         for (int i = 0; i < a.length; i++) {
@@ -153,10 +81,10 @@ public class Sort {
     /**
      * InsertionSort, split the array in a unsorted and sorted part. At the beginning, the sorted part is index 0 and the
      * unsorted part is the rest of the array. Every index higher than zero will be placed into the sorted part at the right
-     * position.
+     * position. This algorithm has a complexity of O(n^2) and is stable.
      * @param a the unsorted list.
      */
-    public void insertionSort(final int[] a) {
+    public static void insertionSort(final int[] a) {
         int currentValue, j = 0;
 
         for (int i = 1; i < a.length; i++) {
@@ -173,10 +101,10 @@ public class Sort {
     
     /**
      * Sort an array with the bubble sort algorithm. It checks if there was an exchange for the last index. If no exchange
-     * was needed, the array is still sorted.
+     * was needed, the array is still sorted. This algorithm has a complexity of O(n^2) and is stable.
      * @param a Array of unsorted values.
      */
-    public void bubbleSort(final int[] a) {
+    public static void bubbleSort(final int[] a) {
         int range = a.length -1;
         boolean exchanged = false;
         
@@ -195,14 +123,15 @@ public class Sort {
     }
     
     /**
-     * Quicksort algorithm whith a median pivot element.
+     * Quicksort algorithm whith a median pivot element. This algorithm has a not guaranteed complexity of 
+     * O(n*log(n)) and is not stable.
      * @param a Array to sort.
-     * @param left Left border, at beginning <code> 0 </code>
-     * @param right right border, at beginning <code> a.lenght - 1</code>.
+     * @param left Left border, at beginning <code>0</code>.
+     * @param right right border, at beginning <code>a.lenght - 1</code>.
      */
-    public void quickSort(final int[] a, final int left, final int right) {
+    private static void quickSort(final int[] a, final int left, final int right) {
         int up = left;                  // left border
-        int down = right - 1;           // right border
+        int down = right - 1;           // right border hallo nicole
         int p = medianOfThree(a, left, right);   // the pivot element is the median of three values
         boolean allElementChecked = false;
 
@@ -221,23 +150,36 @@ public class Sort {
                 allElementChecked = true;
             }
         } while (!allElementChecked);   // overlap
-
-        exchange(a, up, right);         // set the separator element to the right position
-
+        exchange(a, up, right);         // set the pivot element to the right position
         if (left < up - 1) {            // check if there are more than 1 element in the left part
             quickSort(a, left, up - 1); // sort the left part
         }
         if (up + 1 < right) {           // check if there are more than 1 element in the right part
-            quickSort(a, up + 1, right); // sort the right part (without the separator)
+            quickSort(a, up + 1, right); // sort the right part (without the pivot)
         }
+    }
+    
+    /**
+     * Invokes the QuickSort method in this class. The start values are <code>left = 0</code> and
+     * <code>right = a.length -1</code>.
+     * @param a An unsorted array.
+     */
+    public static void quickSort(final int[] a) {
+        quickSort(a, 0, a.length -1);
     }
     
     /**
      * Invokes an MergeSort algorithm.
      * @param a An unsorted array.
      */
-    public void mergeSort(final int[] a) {
-        MergeSort ms = new MergeSort();
-        ms.mergeSort(a);
+    public static void mergeSort(final int[] a) {
+        (new MergeSort()).sort(a);
+    }
+    
+    public static void printOutArray(final int[] a) {
+        System.out.println();
+        for(int i = 0; i < a.length; i++) {
+            System.out.print(a[i]+" ");
+        }
     }
 }
