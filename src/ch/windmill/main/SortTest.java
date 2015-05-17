@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ch.windmill.main;
 
 import ch.windmill.algo.Sort;
@@ -11,6 +6,7 @@ import java.util.Arrays;
 /**
  * This is only test class for the sort algorithms of the package <code>ch.windmill.algo</code>.
  * @author Cyrill Jauner
+ * @version 1.0.0
  */
 public class SortTest {
     
