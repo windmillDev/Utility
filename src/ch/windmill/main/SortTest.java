@@ -12,7 +12,7 @@ public class SortTest {
     
     public static void main(String[] args) {
         //int[] list = new int[] {4,6,2,3,1,5};
-        int[] list = new int[1000000];
+        int[] list = new int[100000];
         long start, end = 0;
         
         for(int j = 0; j < list.length; j++) {
@@ -23,6 +23,11 @@ public class SortTest {
         Sort.quickSort(Arrays.copyOf(list, list.length));
         end = System.currentTimeMillis();
         System.out.println("quickSort time: "+(end -start)+" miliseconds");
+        
+        start = System.currentTimeMillis();
+        Sort.quickInsertionSort(Arrays.copyOf(list, list.length));
+        end = System.currentTimeMillis();
+        System.out.println("quickInsertionSort time: "+(end -start)+" miliseconds");
         
         start = System.currentTimeMillis();
         Sort.mergeSort(Arrays.copyOf(list, list.length));

@@ -6,10 +6,11 @@ package ch.windmill.algo;
  * @version 1.0.0
  */
 public class Sort {
+    public final static int M = 25;
     
     /**
      * Exchange the element on the position first with the element on the position second.
-     * @param a The array of values.
+     * @param a Array to sort.
      * @param first The first index.
      * @param second The second index.
      */
@@ -21,7 +22,7 @@ public class Sort {
     
     /**
      * Calculates the median item value of three items (left, right and center). 
-     * @param a The array of values.
+     * @param a Array to sort.
      * @param left The left item index.
      * @param right The right item index.
      */
@@ -60,7 +61,7 @@ public class Sort {
     /**
      * SelectionSort Check every position of the array, if it's lower than the next position. If it's true, change the position of the current
      * value with the lower position. This algorithm has a complexity of O(n^2) and is not stable.
-     * @param a The unsorted list
+     * @param a Array to sort.
      */
     public static void selectionSort(final int[] a) {
         int tmp, min = 0;
@@ -82,7 +83,7 @@ public class Sort {
      * InsertionSort, split the array in a unsorted and sorted part. At the beginning, the sorted part is index 0 and the
      * unsorted part is the rest of the array. Every index higher than zero will be placed into the sorted part at the right
      * position. This algorithm has a complexity of O(n^2) and is stable.
-     * @param a the unsorted list.
+     * @param a Array to sort.
      */
     public static void insertionSort(final int[] a) {
         int currentValue, j = 0;
@@ -102,7 +103,7 @@ public class Sort {
     /**
      * Sort an array with the bubble sort algorithm. It checks if there was an exchange for the last index. If no exchange
      * was needed, the array is still sorted. This algorithm has a complexity of O(n^2) and is stable.
-     * @param a Array of unsorted values.
+     * @param a Array to sort.
      */
     public static void bubbleSort(final int[] a) {
         int range = a.length -1;
@@ -123,7 +124,7 @@ public class Sort {
     }
     
     /**
-     * Quicksort algorithm whith a median pivot element. This algorithm has a not guaranteed complexity of 
+     * Quicksort algorithm with a median pivot element. This algorithm has a not guaranteed complexity of 
      * O(n*log(n)) and is not stable.
      * @param a Array to sort.
      * @param left Left border, at beginning <code>0</code>.
@@ -154,7 +155,7 @@ public class Sort {
         if (left < up - 1) {            // check if there are more than 1 element in the left part
             quickSort(a, left, up - 1); // sort the left part
         }
-        if (up + 1 < right) {           // check if there are more than 1 element in the right part
+        if (up + 1 < right) {           // check if there are more than 1 elements in the right part
             quickSort(a, up + 1, right); // sort the right part (without the pivot)
         }
     }
@@ -162,15 +163,74 @@ public class Sort {
     /**
      * Invokes the QuickSort method in this class. The start values are <code>left = 0</code> and
      * <code>right = a.length -1</code>.
-     * @param a An unsorted array.
+     * @param a Array to sort.
      */
     public static void quickSort(final int[] a) {
         quickSort(a, 0, a.length -1);
     }
     
     /**
+     * Quickinsertionsort algorithm with a median pivot element. It works equals as the normal quicksort algorithm,
+     * but if the list is shorter than <code>M</code>, it use an Insertionsort. This algorithm has a not 
+     * guaranteed complexity of O(n*log(n)) and is not stable.
+     * @param a Array to sort.
+     * @param left Left border, at beginning <code>0</code>.
+     * @param right right border, at beginning <code>a.lenght - 1</code>.
+     */
+    private static void quickInsertionSort(final int[] a, final int left, final int right) {
+        if(right -left > M) {
+            int up = left;                  // left border
+            int down = right - 1;           // right border hallo nicole
+            int p = medianOfThree(a, left, right);   // the pivot element is the median of three values
+            boolean allElementChecked = false;
+
+            do {
+                while (a[up] < p) {
+                    up++;                   // find the next element who is bigger
+                }
+                while ((a[down] > p) && (down > up)) {
+                    down--;                 // find the next element who is lower
+                }
+                if (up < down) {
+                    exchange(a, up, down);  // exchange
+                    up++;                   // move left and right border
+                    down--;
+                } else {
+                    allElementChecked = true;
+                }
+            } while (!allElementChecked);   // overlap
+            exchange(a, up, right);         // set the pivot element to the right position
+            if (left < up - 1) {            // check if there are more than 1 element in the left part
+                quickInsertionSort(a, left, up - 1); // sort the left part
+            }
+            if (up + 1 < right) {           // check if there are more than 1 elements in the right part
+                quickInsertionSort(a, up + 1, right); // sort the right part (without the pivot)
+            }
+        } else {
+            int tmp, i, j;                  // insertion sort
+
+            for (i = (left + 1); i <= right; ++i) {
+                tmp = a[i];
+                for (j = (i - 1); (j >= left) && (tmp < a[j]); --j) {
+                    a[j + 1] = a[j];
+                }
+                a[j + 1] = tmp;
+            }
+        }
+    }
+    
+    /**
+     * Invokes the QuickInsertionSort method in this class. The start values are <code>left = 0</code> and
+     * <code>right = a.length -1</code>.
+     * @param a Array to sort.
+     */
+    public static void quickInsertionSort(final int[] a) {
+        quickInsertionSort(a, 0, a.length -1);
+    }
+    
+    /**
      * Invokes an MergeSort algorithm.
-     * @param a An unsorted array.
+     * @param a Array to sort.
      */
     public static void mergeSort(final int[] a) {
         (new MergeSort()).sort(a);
