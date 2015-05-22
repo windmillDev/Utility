@@ -2,10 +2,10 @@ package ch.windmill.secure;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
- *
+ * Provides functions to encode and decode with the RSA algorithm. This class needs RSA keys. See
+ * <code>ch.windmill.secure.RSAKeyPair</code> and <code>ch.windmill.secure.RSAKey</code>.
  * @author Cyrill Jauner
  * @version 1.0.0
  */
@@ -13,56 +13,40 @@ public class RSA {
     private final RSAKey pubKey;
     private final RSAKey privKey;
     
-    public static void main(String[] args) {
-        RSAKeyPair kp = new RSAKeyPair(512);
-        //System.out.println(kp.getPublicKey().toString());
-        //System.out.println(kp.getPrivateKey().toString());
-        
-        //RSAKey pubKey = new RSAKey(true, 100, "1127", "1210537");
-        //RSAKey privKey = new RSAKey(true, 100, "438403", "1210537");
-        
-        RSA rsa = new RSA(kp.getPublicKey(), kp.getPrivateKey());
-        //RSA rsa = new RSA(pubKey, privKey);
-        String enc = rsa.encode("TEST");
-        String dec = rsa.decode(enc);
-        System.out.println("Encoded: "+enc);
-        System.out.println("Decoded: "+dec);
-        //System.out.println("TEST euclidian algo: "+kp.extendedEuclidianAlgorithm(new BigInteger("1127"), new BigInteger("1208020")));
-        //System.out.println((new BigInteger("1127").modPow(BigInteger.ZERO, BigInteger.ONE));
-    }
-    
+    /**
+     * Creates a new RSA object.
+     * @param pubKey The public key for encoding.
+     * @param privKey The private key for decoding.
+     */
     public RSA(final RSAKey pubKey, final RSAKey privKey) {
         this.pubKey = pubKey;
         this.privKey = privKey;
     }
     
-    private String toUnicode(final String s) {
-        String unicode = "";
-        for(char c : s.toCharArray()) {
-            if(c < 100) {
-                unicode += "0"+(int)c;
-            } else {
-                unicode += (int)c;
-            }
-        }
-        
-        return unicode;
-    }
-    
-    private ArrayList<String> toBalancedBlocks(final String s, final int keyLength) {
+    /**
+     * Create parts with the max length of keyLenght. If the string is shorter than keyLength, the arrayList
+     * has only one value with the whole string s.
+     * @param s The string to check.
+     * @param keyLength The max length of one part.
+     * @return Separated List with all parts.
+     */
+    private ArrayList<String> toBalancedBlocks(final String s, final int blockLength) {
          ArrayList<String> blocks = new ArrayList<>();
          
-         if(s.length() > keyLength) {
+         if(s.length() > blockLength) {
              String block = "";
              for(int i = 0; i < s.length(); i++) {
-                 if(block.length() == keyLength) {
+                 block += s.charAt(i);
+                 if(block.length() == blockLength) {
                      blocks.add(block);
+                     System.out.println("new block "+block);
                      block = "";
                  }
              }
              
              if(block.length() > 0) {
-                blocks.add(block); 
+                blocks.add(block);
+                System.out.println("new block "+block);
              }
          } else {
              blocks.add(s);
@@ -71,24 +55,16 @@ public class RSA {
          return blocks;
     }
     
-    private String unicodeToString(final String s) {
-        String res = "";
-        for(int i = 3; i <= s.length(); i+=3) {
-            res += (char) Integer.parseInt(s.substring(i-3, i));
-        }
-        
-        return res;
-    }
-    
-    public String encode(final String data) {
+    /**
+     * Encode the data with the public key.
+     * @param b The data to encode.
+     * @return Encoded data.
+     */
+    public String encode(final byte[] b) {
         String encoded = "";
-        ArrayList<String> blocks = toBalancedBlocks(toUnicode(data), pubKey.getModulLength());
+        ArrayList<String> blocks = toBalancedBlocks((new BigInteger(b)).toString(), pubKey.getModulLength());
         
         for(String block : blocks) {
-            if(block.charAt(0) < 100) {
-                block = "999" + block;
-            }
-            
             encoded += (new BigInteger(block)).modPow(new BigInteger(pubKey.getExponent()),
                     new BigInteger(pubKey.getModulus())).toString();
         }
@@ -96,18 +72,20 @@ public class RSA {
         return encoded;
     }
     
-    public String decode(final String encoded) {
+    /**
+     * Decode the encoded string with the private key.
+     * @param b The encoded data.
+     * @return Decoded bytes.
+     */
+    public byte[] decode(final String b) {
         String decoded = "";
-        ArrayList<String> blocks = toBalancedBlocks(encoded, privKey.getModulLength());
+        ArrayList<String> blocks = toBalancedBlocks(b, privKey.getModulLength());
         
         for(String block : blocks) {
             decoded += (new BigInteger(block)).modPow(new BigInteger(privKey.getExponent()),
                     new BigInteger(privKey.getModulus())).toString();
         }
-        if(decoded.substring(0, 3).equals("999")) {
-            decoded = decoded.substring(3, decoded.length());
-        }
         
-        return unicodeToString(decoded);
+        return (new BigInteger(decoded)).toByteArray();
     }
 }
