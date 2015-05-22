@@ -73,8 +73,9 @@ public class RSAKeyPair {
     }
     
     /**
-     * Calculate the multiplicative inverse number. The private key value is looking for. the calculation is <code>(d*factor)mod(modulus)</code>, d is
-     * the result of the calculation. Negative numbers are not permitted.
+     * Calculate the multiplicative inverse number. The private key value will be calculated with this method.
+     * The calculation is <code>(d*factor)mod(modulus)</code>, d is the result of the calculation.
+     * Negative numbers are not permitted.
      * @param factor The factor for multiplication.
      * @param modulus The modulus value.
      * @return The multiplicative inverse number.
