@@ -1,7 +1,9 @@
 package ch.windmill.secure;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
- * This class represents a public or private RSA key.
+ * This class represents an RSA key. The key can be public or final.
  * @author Cyrill Jauner
  * @version 1.0.0
  */
@@ -10,6 +12,11 @@ public class RSAKey extends Key {
     private String exp;
     private String modulus;
     private int modulLength;
+    
+    public static void main(String[] args) {
+        RSAKey pubKey = (new RSAKeyPair(4096)).getPublicKey();
+        System.out.println(pubKey.toString());
+    }
     
     /**
      * Creates a new RSAKey object.
@@ -83,7 +90,7 @@ public class RSAKey extends Key {
     }
     
     /**
-     * Write the algorithm, key-type and the exponent and modulus value to a String.
+     * Write the algorithm, key-type, exponent and modulus value to a String.
      * @return String contains informations about the object.
      */
     @Override

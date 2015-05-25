@@ -6,7 +6,7 @@ package ch.windmill.secure;
  * @version 1.0.0
  */
 public class Key {
-    private String algorithm;
+    private final String algorithm;
     
     public Key(final String algorithm) {
         this.algorithm = algorithm;
